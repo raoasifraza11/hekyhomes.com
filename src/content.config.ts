@@ -13,6 +13,12 @@ const blog = defineCollection({
 			pubDate: z.coerce.date(),
 			updatedDate: z.coerce.date().optional(),
 			heroImage: image().optional(),
+			// Additional fields for complete blogging
+			tags: z.array(z.string()).default([]),
+			category: z.string().optional(),
+			author: z.string().default('HEKYHomes Team'),
+			draft: z.boolean().default(false),
+			featured: z.boolean().default(false),
 		}),
 });
 

@@ -1,63 +1,196 @@
 ---
-import AboutHeroImage from '../assets/blog-placeholder-about.jpg';
-import Layout from '../layouts/BlogPost.astro';
+import BaseHead from '../components/BaseHead.astro';
+import Footer from '../components/Footer.astro';
+import Header from '../components/Header.astro';
+import { SITE_TITLE, SITE_EMAIL } from '../consts';
 ---
 
-<Layout
-	title="About Me"
-	description="Lorem ipsum dolor sit amet"
-	pubDate={new Date('August 08 2021')}
-	heroImage={AboutHeroImage}
->
-	<p>
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-		labore et dolore magna aliqua. Vitae ultricies leo integer malesuada nunc vel risus commodo
-		viverra. Adipiscing enim eu turpis egestas pretium. Euismod elementum nisi quis eleifend quam
-		adipiscing. In hac habitasse platea dictumst vestibulum. Sagittis purus sit amet volutpat. Netus
-		et malesuada fames ac turpis egestas. Eget magna fermentum iaculis eu non diam phasellus
-		vestibulum lorem. Varius sit amet mattis vulputate enim. Habitasse platea dictumst quisque
-		sagittis. Integer quis auctor elit sed vulputate mi. Dictumst quisque sagittis purus sit amet.
-	</p>
+<!doctype html>
+<html lang="en">
+	<head>
+		<BaseHead title={`About - ${SITE_TITLE}`} description="Learn more about HEKYHomes and our mission to help you create beautiful living spaces." />
+		<style>
+			main {
+				width: 960px;
+			}
+			.about-hero {
+				text-align: center;
+				padding: 3em 0;
+				background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
+				margin: -2em -2em 3em -2em;
+				color: white;
+				border-radius: 0 0 20px 20px;
+			}
+			.about-hero h1 {
+				font-size: 3em;
+				margin: 0 0 0.5em;
+				color: white;
+				text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+			}
+			.about-hero p {
+				font-size: 1.3em;
+				max-width: 600px;
+				margin: 0 auto;
+				color: white;
+				text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+			}
+			.content {
+				max-width: 720px;
+				margin: 0 auto;
+				padding: 2em;
+			}
+			.content h2 {
+				color: rgb(var(--black));
+				margin-top: 2em;
+				margin-bottom: 1em;
+			}
+			.content p {
+				line-height: 1.8;
+				color: rgb(var(--gray-dark));
+				margin-bottom: 1.5em;
+			}
+			.stats {
+				display: grid;
+				grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+				gap: 2em;
+				margin: 3em 0;
+			}
+			.stat-card {
+				text-align: center;
+				padding: 2em;
+				background: rgb(var(--gray-light));
+				border-radius: 12px;
+			}
+			.stat-number {
+				font-size: 3em;
+				font-weight: 700;
+				color: rgb(var(--accent));
+				margin-bottom: 0.25em;
+			}
+			.stat-label {
+				color: rgb(var(--gray-dark));
+				font-size: 1.1em;
+			}
+			.contact-box {
+				background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
+				color: white;
+				padding: 3em;
+				border-radius: 12px;
+				text-align: center;
+				margin: 3em 0;
+			}
+			.contact-box h2 {
+				color: white;
+				margin-top: 0;
+			}
+			.contact-box a {
+				color: white;
+				text-decoration: underline;
+				font-weight: 600;
+			}
+			.team-values {
+				background: rgb(var(--gray-light));
+				padding: 2em;
+				border-radius: 12px;
+				border-left: 4px solid rgb(var(--accent));
+			}
+			@media (max-width: 720px) {
+				.about-hero h1 {
+					font-size: 2em;
+				}
+			}
+		</style>
+	</head>
+	<body>
+		<Header />
+		<main>
+			<div class="about-hero">
+				<h1>About HEKYHomes</h1>
+				<p>Creating beautiful homes, inspiring better living</p>
+			</div>
 
-	<p>
-		Morbi tristique senectus et netus. Id semper risus in hendrerit gravida rutrum quisque non
-		tellus. Habitasse platea dictumst quisque sagittis purus sit amet. Tellus molestie nunc non
-		blandit massa. Cursus vitae congue mauris rhoncus. Accumsan tortor posuere ac ut. Fringilla urna
-		porttitor rhoncus dolor. Elit ullamcorper dignissim cras tincidunt lobortis. In cursus turpis
-		massa tincidunt dui ut ornare lectus. Integer feugiat scelerisque varius morbi enim nunc.
-		Bibendum neque egestas congue quisque egestas diam. Cras ornare arcu dui vivamus arcu felis
-		bibendum. Dignissim suspendisse in est ante in nibh mauris. Sed tempus urna et pharetra pharetra
-		massa massa ultricies mi.
-	</p>
+			<div class="content">
+				<h2>Who We Are</h2>
+				<p>
+					HEKYHomes is your trusted source for home inspiration, design tips, and real estate insights. 
+					We believe that everyone deserves a space they can call home—a place that reflects their personality, 
+					meets their needs, and brings them joy.
+				</p>
 
-	<p>
-		Mollis nunc sed id semper risus in. Convallis a cras semper auctor neque. Diam sit amet nisl
-		suscipit. Lacus viverra vitae congue eu consequat ac felis donec. Egestas integer eget aliquet
-		nibh praesent tristique magna sit amet. Eget magna fermentum iaculis eu non diam. In vitae
-		turpis massa sed elementum. Tristique et egestas quis ipsum suspendisse ultrices. Eget lorem
-		dolor sed viverra ipsum. Vel turpis nunc eget lorem dolor sed viverra. Posuere ac ut consequat
-		semper viverra nam. Laoreet suspendisse interdum consectetur libero id faucibus. Diam phasellus
-		vestibulum lorem sed risus ultricies tristique. Rhoncus dolor purus non enim praesent elementum
-		facilisis. Ultrices tincidunt arcu non sodales neque. Tempus egestas sed sed risus pretium quam
-		vulputate. Viverra suspendisse potenti nullam ac tortor vitae purus faucibus ornare. Fringilla
-		urna porttitor rhoncus dolor purus non. Amet dictum sit amet justo donec enim.
-	</p>
+				<p>
+					Through our blog, we share practical advice, design trends, sustainability tips, and expert guides 
+					to help you make informed decisions about your living space. Whether you're buying your first home, 
+					renovating, decorating, or simply looking for inspiration, we're here to help.
+				</p>
 
-	<p>
-		Mattis ullamcorper velit sed ullamcorper morbi tincidunt. Tortor posuere ac ut consequat semper
-		viverra. Tellus mauris a diam maecenas sed enim ut sem viverra. Venenatis urna cursus eget nunc
-		scelerisque viverra mauris in. Arcu ac tortor dignissim convallis aenean et tortor at. Curabitur
-		gravida arcu ac tortor dignissim convallis aenean et tortor. Egestas tellus rutrum tellus
-		pellentesque eu. Fusce ut placerat orci nulla pellentesque dignissim enim sit amet. Ut enim
-		blandit volutpat maecenas volutpat blandit aliquam etiam. Id donec ultrices tincidunt arcu. Id
-		cursus metus aliquam eleifend mi.
-	</p>
+				<h2>Our Mission</h2>
+				<p>
+					To educate, inspire, and support people in creating beautiful, functional, and sustainable living 
+					spaces that enhance their quality of life.
+				</p>
 
-	<p>
-		Tempus quam pellentesque nec nam aliquam sem. Risus at ultrices mi tempus imperdiet. Id porta
-		nibh venenatis cras sed felis eget velit. Ipsum a arcu cursus vitae. Facilisis magna etiam
-		tempor orci eu lobortis elementum. Tincidunt dui ut ornare lectus sit. Quisque non tellus orci
-		ac. Blandit libero volutpat sed cras. Nec tincidunt praesent semper feugiat nibh sed pulvinar
-		proin gravida. Egestas integer eget aliquet nibh praesent tristique magna.
-	</p>
-</Layout>
+				<div class="team-values">
+					<h3>Our Values</h3>
+					<ul>
+						<li><strong>Education</strong> - Sharing knowledge to empower informed decisions</li>
+						<li><strong>Inspiration</strong> - Showcasing possibilities and creative ideas</li>
+						<li><strong>Sustainability</strong> - Promoting eco-friendly and responsible living</li>
+						<li><strong>Community</strong> - Building connections among home enthusiasts</li>
+						<li><strong>Authenticity</strong> - Providing honest, practical advice</li>
+					</ul>
+				</div>
+
+				<h2>What We Cover</h2>
+				<p>Our blog features content across several key areas:</p>
+				<ul>
+					<li><strong>Home Design & Trends</strong> - Latest styles, colors, and design innovations</li>
+					<li><strong>Real Estate</strong> - Buying, selling, and market insights</li>
+					<li><strong>DIY & Tips</strong> - Practical guides for home improvement</li>
+					<li><strong>Sustainability</strong> - Eco-friendly living and green homes</li>
+					<li><strong>Organization</strong> - Space optimization and storage solutions</li>
+				</ul>
+
+				<div class="stats">
+					<div class="stat-card">
+						<div class="stat-number">5+</div>
+						<div class="stat-label">Categories</div>
+					</div>
+					<div class="stat-card">
+						<div class="stat-number">100%</div>
+						<div class="stat-label">Quality Content</div>
+					</div>
+					<div class="stat-card">
+						<div class="stat-number">∞</div>
+						<div class="stat-label">Inspiration</div>
+					</div>
+				</div>
+
+				<h2>Join Our Community</h2>
+				<p>
+					We're building a community of home enthusiasts, designers, homeowners, and anyone who loves 
+					creating beautiful spaces. Follow us on social media, share your own home stories, and let's 
+					inspire each other.
+				</p>
+
+				<div class="contact-box">
+					<h2>Get in Touch</h2>
+					<p>Have questions, suggestions, or want to collaborate?</p>
+					<p>Email us at <a href={`mailto:${SITE_EMAIL}`}>{SITE_EMAIL}</a></p>
+					<p>We'd love to hear from you!</p>
+				</div>
+
+				<h2>Our Commitment</h2>
+				<p>
+					Every article we publish is carefully researched and written to provide genuine value. 
+					We're committed to maintaining high standards of quality, accuracy, and authenticity in 
+					everything we share.
+				</p>
+
+				<p>
+					Thank you for being part of the HEKYHomes community. Here's to creating spaces we love! 🏠✨
+				</p>
+			</div>
+		</main>
+		<Footer />
+	</body>
+</html>
