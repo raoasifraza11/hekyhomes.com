@@ -1,7 +1,13 @@
 ---
+import { getCollection } from 'astro:content';
 import { SITE_TITLE } from '../consts';
 import HeaderLink from './HeaderLink.astro';
 import Logo from './Logo.astro';
+
+// Get all unique categories from published posts
+const allPosts = await getCollection('blog');
+const publishedPosts = allPosts.filter(post => !post.data.draft);
+const categories = [...new Set(publishedPosts.map(post => post.data.category).filter(Boolean))].sort();
 ---
 
 <header>
@@ -9,10 +15,38 @@ import Logo from './Logo.astro';
 		<h2><a href="/" class="logo-link" aria-label="HEKYHomes Home"><Logo /></a></h2>
 		<div class="internal-links">
 			<HeaderLink href="/">Home</HeaderLink>
-			<HeaderLink href="/blog">Blog</HeaderLink>
-			<HeaderLink href="/categories">Categories</HeaderLink>
-			<HeaderLink href="/about">About</HeaderLink>
-			<HeaderLink href="/contact">Contact</HeaderLink>
+			<HeaderLink href="/blog">Blogs</HeaderLink>
+			<div class="dropdown">
+				<a href="#" class="dropdown-trigger">
+					Categories
+					<span class="arrow">▼</span>
+				</a>
+				<div class="dropdown-menu">
+					<div class="dropdown-columns">
+						<div class="dropdown-column">
+							<div class="column-title">Home Spaces</div>
+							<a href="/blog/category/kitchen" class="dropdown-item">Kitchen</a>
+							<a href="/blog/category/bathrooms" class="dropdown-item">Bathrooms</a>
+							<a href="/blog/category/interior-design" class="dropdown-item">Interior Design</a>
+							<a href="/blog/category/furniture" class="dropdown-item">Furniture</a>
+						</div>
+						<div class="dropdown-column">
+							<div class="column-title">Home Care</div>
+							<a href="/blog/category/home-improvement" class="dropdown-item">Home Improvement</a>
+							<a href="/blog/category/windows" class="dropdown-item">Windows</a>
+							<a href="/blog/category/pests" class="dropdown-item">Pests</a>
+						</div>
+						<div class="dropdown-column">
+							<div class="column-title">Outdoor & More</div>
+							<a href="/blog/category/garden" class="dropdown-item">Garden</a>
+							<a href="/blog/category/property" class="dropdown-item">Property</a>
+							<a href="/blog/category/tv" class="dropdown-item">TV & Entertainment</a>
+						</div>
+					</div>
+				</div>
+			</div>
+			<HeaderLink href="/contact">Contact US</HeaderLink>
+			<HeaderLink href="/about">About US</HeaderLink>
 		</div>
 		<div class="social-links">
 			<a href="https://twitter.com/hekyhomes" target="_blank">
@@ -86,19 +120,150 @@ import Logo from './Logo.astro';
 	}
 	nav a {
 		padding: 1em 0.5em;
-		color: var(--black);
-		border-bottom: 4px solid transparent;
+		color: rgb(var(--gray-dark));
+		border-bottom: 3px solid transparent;
 		text-decoration: none;
-		transition: border-bottom-color 0.3s ease;
+		transition: all 0.3s ease;
+		font-weight: 500;
+		font-size: 0.95em;
+	}
+	nav a:hover {
+		color: rgb(var(--accent));
 	}
 	nav a.active {
 		text-decoration: none;
-		border-bottom-color: var(--accent);
+		border-bottom-color: rgb(var(--accent));
+		color: rgb(var(--accent));
+		font-weight: 600;
 	}
 	.social-links,
 	.social-links a {
 		display: flex;
 	}
+	.internal-links {
+		display: flex;
+		gap: 0.5em;
+		align-items: center;
+	}
+	
+	.dropdown {
+		position: relative;
+		display: inline-block;
+	}
+	
+	.dropdown-trigger {
+		display: flex;
+		align-items: center;
+		gap: 0.3em;
+		cursor: pointer;
+		padding: 1em 0.5em;
+		color: rgb(var(--gray-dark));
+		text-decoration: none;
+		transition: all 0.3s ease;
+		font-weight: 500;
+		font-size: 0.95em;
+		border-bottom: 3px solid transparent;
+	}
+	
+	.dropdown-trigger:hover {
+		color: rgb(var(--accent));
+	}
+	
+	.arrow {
+		font-size: 0.7em;
+		transition: transform 0.3s ease;
+	}
+	
+	.dropdown:hover .arrow {
+		transform: rotate(180deg);
+	}
+	
+	.dropdown-menu {
+		display: none;
+		position: absolute;
+		top: calc(100% + 3px);
+		left: 50%;
+		transform: translateX(-50%);
+		background: white;
+		box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+		border-radius: 8px;
+		padding: 1.5em;
+		z-index: 1000;
+		min-width: 500px;
+	}
+	
+	/* Add invisible bridge between trigger and dropdown */
+	.dropdown::after {
+		content: '';
+		position: absolute;
+		top: 100%;
+		left: 0;
+		right: 0;
+		height: 10px;
+		background: transparent;
+	}
+	
+	.dropdown:hover .dropdown-menu {
+		display: block;
+	}
+	
+	.dropdown-columns {
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
+		gap: 2em;
+	}
+	
+	.dropdown-column {
+		display: flex;
+		flex-direction: column;
+		gap: 0.5em;
+	}
+	
+	.column-title {
+		font-weight: 700;
+		font-size: 0.85em;
+		text-transform: uppercase;
+		color: rgb(var(--accent));
+		margin-bottom: 0.5em;
+		padding-bottom: 0.5em;
+		border-bottom: 2px solid rgb(var(--gray-light));
+	}
+	
+	.dropdown-item {
+		display: block;
+		padding: 0.5em 0.75em;
+		color: rgb(var(--gray-dark));
+		text-decoration: none;
+		transition: all 0.2s ease;
+		font-weight: 500;
+		font-size: 0.9em;
+		border-radius: 4px;
+	}
+	
+	.dropdown-item:hover {
+		background: rgb(var(--gray-light));
+		color: rgb(var(--accent));
+		padding-left: 1em;
+	}
+	
+	@media (max-width: 1200px) {
+		.dropdown-menu {
+			min-width: 400px;
+		}
+		.dropdown-columns {
+			grid-template-columns: repeat(2, 1fr);
+		}
+	}
+	
+	@media (max-width: 900px) {
+		.internal-links {
+			display: none;
+		}
+		.logo-link {
+			margin: 0 auto;
+		}
+	}
+	
 	@media (max-width: 720px) {
 		.social-links {
 			display: none;

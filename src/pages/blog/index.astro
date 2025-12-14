@@ -14,19 +14,27 @@ const allPosts = (await getCollection('blog')).sort(
 
 // Filter out draft posts
 const posts = allPosts.filter(post => !post.data.draft);
+
+// Pagination
+const postsPerPage = 9;
+const currentPage = 1; // For now, we'll implement full pagination later
+const totalPages = Math.ceil(posts.length / postsPerPage);
+const paginatedPosts = posts.slice(0, postsPerPage);
 ---
 
 <!doctype html>
 <html lang="en">
 	<head>
-		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+		<BaseHead title={`Blog - ${SITE_TITLE}`} description="Stories, insights, and updates from HEKYHomes. Explore home design, real estate tips, and lifestyle inspiration." />
 		<style>
 			main {
-				width: 960px;
+				max-width: 1400px;
+				margin: 0 auto;
+				padding: 2em 3em;
 			}
 			.page-header {
 				text-align: center;
-				margin: 2em 0 3em;
+				margin: 1em 0 2em;
 			}
 			.page-header h1 {
 				margin-bottom: 0.5em;
@@ -36,29 +44,16 @@ const posts = allPosts.filter(post => !post.data.draft);
 				font-size: 1.1em;
 			}
 			ul {
-				display: flex;
-				flex-wrap: wrap;
+				display: grid;
+				grid-template-columns: repeat(3, 1fr);
 				gap: 2rem;
 				list-style-type: none;
 				margin: 0;
 				padding: 0;
 			}
-			ul li {
-				width: calc(50% - 1rem);
-			}
 			ul li * {
 				text-decoration: none;
 				transition: 0.2s ease;
-			}
-			ul li:first-child {
-				width: 100%;
-				margin-bottom: 1rem;
-			}
-			ul li:first-child img {
-				width: 100%;
-			}
-			ul li:first-child .title {
-				font-size: 2.369rem;
 			}
 			ul li img {
 				margin-bottom: 0.5rem;
@@ -131,18 +126,51 @@ const posts = allPosts.filter(post => !post.data.draft);
 			ul a:hover img {
 				box-shadow: var(--box-shadow);
 			}
-			@media (max-width: 720px) {
+			
+			.pagination {
+				display: flex;
+				justify-content: center;
+				gap: 0.5em;
+				margin-top: 3em;
+				padding: 2em 0;
+			}
+			.pagination a,
+			.pagination span {
+				padding: 0.75em 1.25em;
+				border: 1px solid rgb(var(--gray-light));
+				border-radius: 6px;
+				text-decoration: none;
+				color: rgb(var(--black));
+				font-weight: 600;
+				transition: all 0.3s ease;
+			}
+			.pagination a:hover {
+				background: rgb(var(--accent));
+				color: white;
+				border-color: rgb(var(--accent));
+			}
+			.pagination span.current {
+				background: rgb(var(--accent));
+				color: white;
+				border-color: rgb(var(--accent));
+			}
+			.pagination span.disabled {
+				opacity: 0.5;
+				cursor: not-allowed;
+			}
+			
+			@media (max-width: 1200px) {
 				ul {
-					gap: 0.5em;
+					grid-template-columns: repeat(2, 1fr);
 				}
-				ul li {
-					width: 100%;
+			}
+			@media (max-width: 720px) {
+				main {
+					padding: 1em;
 				}
-				ul li:first-child {
-					margin-bottom: 0;
-				}
-				ul li:first-child .title {
-					font-size: 1.563em;
+				ul {
+					grid-template-columns: 1fr;
+					gap: 1.5em;
 				}
 			}
 		</style>
@@ -157,7 +185,7 @@ const posts = allPosts.filter(post => !post.data.draft);
 				</div>
 				<ul>
 					{
-						posts.map((post) => {
+						paginatedPosts.map((post) => {
 							const readingTime = getReadingTime(post.body);
 							return (
 								<li>
@@ -195,6 +223,17 @@ const posts = allPosts.filter(post => !post.data.draft);
 						})
 					}
 				</ul>
+				
+				{totalPages > 1 && (
+					<div class="pagination">
+						<span class="disabled">← Previous</span>
+						<span class="current">1</span>
+						{Array.from({ length: totalPages - 1 }, (_, i) => i + 2).map((pageNum) => (
+							<a href={`/blog/page/${pageNum}`}>{pageNum}</a>
+						))}
+						{totalPages > 1 && <a href="/blog/page/2">Next →</a>}
+					</div>
+				)}
 			</section>
 		</main>
 		<Footer />
