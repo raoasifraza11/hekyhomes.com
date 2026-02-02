@@ -4,9 +4,13 @@ import type { HTMLAttributes } from 'astro/types';
 type Props = HTMLAttributes<'a'>;
 
 const { href, class: className, ...props } = Astro.props;
-const pathname = Astro.url.pathname.replace(import.meta.env.BASE_URL, '');
-const subpath = pathname.match(/[^\/]+/g);
-const isActive = href === pathname || href === '/' + (subpath?.[0] || '');
+const pathname = new URL(Astro.url).pathname;
+const normalizedPathname = pathname.endsWith('/') && pathname !== '/' ? pathname.slice(0, -1) : pathname;
+const normalizedHref = href.endsWith('/') && href !== '/' ? href.slice(0, -1) : href;
+
+// Check if current page matches this link
+const isActive = normalizedPathname === normalizedHref || 
+                 normalizedPathname.startsWith(normalizedHref + '/');
 ---
 
 <a href={href} class:list={[className, { active: isActive }]} {...props}>
@@ -18,7 +22,8 @@ const isActive = href === pathname || href === '/' + (subpath?.[0] || '');
 		text-decoration: none;
 	}
 	a.active {
-		font-weight: bolder;
-		text-decoration: underline;
+		color: rgb(var(--accent)) !important;
+		border-bottom-color: rgb(var(--accent)) !important;
+		font-weight: 600 !important;
 	}
 </style>
